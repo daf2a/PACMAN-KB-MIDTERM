@@ -51,7 +51,15 @@ public class GhostChase : GhostBehavior
             // Print the output to the console
             UnityEngine.Debug.Log("Output: " + output);
 
-            ghost.movement.SetDirection(direction);
+            string[] parts = output.Split(' ');
+
+            int x = int.Parse(parts[0]);
+            int y = int.Parse(parts[1]);
+
+            Vector2 result = new Vector2(x, y);
+
+            UnityEngine.Debug.Log("result :" + result);
+            ghost.movement.SetDirection(result);
             // Print log debug direction each ghost
             // arc direction
             string arc = "";
