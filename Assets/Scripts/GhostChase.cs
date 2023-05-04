@@ -32,6 +32,12 @@ public class GhostChase : GhostBehavior
             Vector3 targetPosition = ghost.target.position;
             Vector3 ghostPosition = transform.position;
 
+            // GET TIME NOW BEFORE RUNNING SCRIPT
+            DateTime now = DateTime.UtcNow;
+            TimeSpan timeSinceEpoch = now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            long epoch_before = (long)timeSinceEpoch.TotalSeconds;
+            UnityEngine.Debug.Log("Before running script: " + epoch_before);
+
             // Create a new process to run the Python script
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = pythonExecutable;
@@ -47,6 +53,16 @@ public class GhostChase : GhostBehavior
             process.Start();
             string output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
+
+            // GET TIME NOW AFTER RUNNING SCRIPT
+            DateTime now = DateTime.UtcNow;
+            TimeSpan timeSinceEpoch = now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            long epoch_after = (long)timeSinceEpoch.TotalSeconds;
+            UnityEngine.Debug.Log("After running script: " + epoch_after);
+
+            // CALCULATE LATENCY
+            long latency = epoch_after - epoch_before;
+            UnityEngine.Debug.Log("Latency: " + latency);
 
             // Print the output to the console
             UnityEngine.Debug.Log("Output: " + output);
