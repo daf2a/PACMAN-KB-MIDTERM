@@ -7,16 +7,16 @@ TILE_SIZE = 256
 
 args = sys.argv
 
-direction = [0, 0, 0, 0]
+direction = []
 player = tuple(float(x) for x in args[1][1:-1].split(','))
 ghost = tuple(float(x) for x in args[2][1:-1].split(','))
 
 i = 0
 while i < 4:
-    direction.append(args[i+3])
+    direction.append(int(args[i+3]))
     i += 1
 
-## Data Dump
+# # Data Dump
 # direction = [0, 0, 0, 0]
 # player = (1.50, -8.53, -5.00)
 # ghost = (2.15, 2.50, 0.00)
