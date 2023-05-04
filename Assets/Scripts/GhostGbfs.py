@@ -1,50 +1,103 @@
 import sys
+import math
 from collections import namedtuple
+import heapq
 
-# Get the command-line arguments
+TILE_SIZE = 256
+
 args = sys.argv
 
-# Create a named tuple to store the data
-player = args[1]
-ghost = args[2]
-available_directions = []
+direction = [0, 0, 0, 0]
+player = tuple(float(x) for x in args[1][1:-1].split(','))
+ghost = tuple(float(x) for x in args[2][1:-1].split(','))
 
 i = 0
-while (i < 4):
-    available_directions.append(args[i+3])
+while i < 4:
+    direction.append(args[i+3])
     i += 1
 
-# RIGHT = 0
-# LEFT = 1
-# UP = 2
-# DOWN = 3
+## Data Dump
+# direction = [0, 0, 0, 0]
+# player = (1.50, -8.53, -5.00)
+# ghost = (2.15, 2.50, 0.00)
+# direction[0] = 1 #Right x+1 0 1 
+# direction[1] = 0 #Left x-1 0 -1
+# direction[2] = 1 #Up y+1 1 1
+# direction[3] = 1 #Down y-1 1 -1
 
-# Get euclidean distance between ghost and player for each direction
-# RIGHT
-if (available_directions[0] == "1"):
-    min_distance = (ghost[0] - player[0])**2 + (ghost[1] - player[1])**2
-    min_direction = 0
+frontier = []
 
-# LEFT
-if (available_directions[1] == "1"):
-    distance = (ghost[0] - player[0])**2 + (ghost[1] - player[1])**2
-    if (distance < min_distance):
-        min_direction = 1
-        min_distance = distance
+# cara if else
+availableDirections = []
+if(direction[0] == 1):
+    availableDirections.append((1, 0))
+if(direction[1] == 1):
+    availableDirections.append((-1, 0))
+if(direction[2] == 1):
+    availableDirections.append((0, 1))
+if(direction[3] == 1):
+    availableDirections.append((0, -1))
 
-# UP
-if (available_directions[2] == "1"):
-    distance = (ghost[0] - player[0])**2 + (ghost[1] - player[1])**2
-    if (distance < min_distance):
-        min_direction = 2
-        min_distance = distance
+for i in range(len(availableDirections)):
+    newPath = [0, 0]
+    newDir = [0, 0]
 
-# DOWN
-if (available_directions[3] == "1"):
-    distance = (ghost[0] - player[0])**2 + (ghost[1] - player[1])**2
-    if (distance < min_distance):
-        min_direction = 3
-        min_distance = distance
+    newPath[0] = ghost[0] + availableDirections[i][0] * TILE_SIZE
+    newPath[1] = ghost[1] + availableDirections[i][1] * TILE_SIZE
+    newDir[0] = availableDirections[i][0]
+    newDir[1] = availableDirections[i][1]
 
-# Return the direction with the minimum distance
-print(min_direction)
+    #pytagorean distance
+    heuristic = math.sqrt((newPath[0] - player[0])**2 + (newPath[1] - player[1])**2)
+    heapq.heappush(frontier, (heuristic, str(str(newDir[0]) + " " + str(newDir[1]) )))
+
+string = str(heapq.heappop(frontier)[1])
+print(string)
+
+
+## Cara for loop
+# for i in range(4):
+#     newPath = [0, 0]
+#     newDir = [0, 0]
+
+#     if direction[i] == 1:
+#         newPath[int(i/2)] = ghost[int(i/2)] + pow(-1, i)
+#         newDir[int(i/2)] = pow(-1, i)
+
+#         newPath[int(((i/2)+1)%2)] = ghost[int(((i/2)+1)%2)]
+
+#         #pytagorean distance
+#         heuristic = math.sqrt(pow(newPath[0] - player[0], 2) + pow(newPath[1] - player[1], 2))
+#         heapq.heappush(frontier, (heuristic, str(str(newDir[0]) + " " + str(newDir[1]) )))
+
+# string = str(heapq.heappop(frontier)[1])
+# print(string)
+
+
+## Dump
+# string = str(ghost) + ", " + str(player) + ", " + str(direction[0]) + ", " + str(direction[1]) + ", " + str(direction[2]) + ", " + str(direction[3])
+# print(string)
+        
+
+#             string = "Ghost: " + str(ghost) + " Player: " + str(player) + " Direction: " + str(directionRight)
+#             print(string)
+
+#             Vector2 direction = Vector2.zero;
+#             float minDistance = float.MaxValue;
+
+#             // Find the available direction that moves closet to pacman
+#             foreach (Vector2 availableDirection in node.availableDirections)
+#             {
+#                 // If the distance in this direction is less than the current
+#                 // min distance then this direction becomes the new closest
+#                 Vector3 newPosition = transform.position + new Vector3(availableDirection.x, availableDirection.y);
+#                 float distance = (ghost.target.position - newPosition).sqrMagnitude;
+
+#                 if (distance < minDistance)
+#                 {
+#                     direction = availableDirection;
+#                     minDistance = distance;
+#                 }
+#             }
+
+#             ghost.movement.SetDirection(direction);
