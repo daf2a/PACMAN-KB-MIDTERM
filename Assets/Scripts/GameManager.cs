@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public int ghostMultiplier { get; private set; } = 1;
     public int score { get; private set; }
     public int lives { get; private set; }
+    public int framesRendered { get; private set; }
 
     private void Start()
     {
@@ -24,11 +25,14 @@ public class GameManager : MonoBehaviour
     {
         if (lives <= 0 && Input.anyKeyDown) {
             NewGame();
+        } else {
+            SetFramesRendered(false);
         }
     }
 
     private void NewGame()
     {
+        SetFramesRendered(true);
         SetScore(0);
         SetLives(3);
         NewRound();
@@ -75,6 +79,16 @@ public class GameManager : MonoBehaviour
     {
         this.score = score;
         scoreText.text = score.ToString().PadLeft(2, '0');
+    }
+
+    private void SetFramesRendered(bool isInitial)
+    {
+        if (isInitial) {
+            this.framesRendered = 0;
+        } else {
+            this.framesRendered += 1;
+        }
+        Debug.Log("Elapsed Time: " + this.framesRendered); // Please check the value of this
     }
 
     public void PacmanEaten()
