@@ -32,8 +32,8 @@ public class GhostChase : GhostBehavior
             Vector3 targetPosition = ghost.target.position;
             Vector3 ghostPosition = transform.position;
 
-            // Run API every 60 frames rendered
-            if (framesRendered % 60 == 0) {
+            // Run API every 60 frames rendered or is in intersection
+            if (framesRendered % 60 == 0 || availableDirection.Length > 2) {
                 // Set the path to your Python executable and script
                 string pythonExecutable = "C:/Users/asus/AppData/Local/Microsoft/WindowsApps/python.exe";
                 string pythonScript = "D:/Kuliah/(2023) S4-KB/PACMAN-KB-MIDTERM/Assets/Scripts/GhostGbfs.py";
