@@ -55,7 +55,7 @@ string = str(heapq.heappop(frontier)[1])
 print(string)
 
 
-## Cara for loop
+# # Cara for loop
 # for i in range(4):
 #     newPath = [0, 0]
 #     newDir = [0, 0]

@@ -17,6 +17,7 @@ public class GhostChase : GhostBehavior
 
         // Do nothing while the ghost is frightened
         // and one execeution per second
+        // UnityEngine.Debug.Log("Frames : " + framesRendered);
         if (node != null && enabled && !ghost.frightened.enabled)
         {
             Vector2 direction = Vector2.zero;
@@ -28,21 +29,16 @@ public class GhostChase : GhostBehavior
                 else if(availableDirection.x == 0 && availableDirection.y == 1) directions[2] = 1;
                 else if(availableDirection.x == 0 && availableDirection.y == -1) directions[3] = 1;
             }
-
             Vector3 targetPosition = ghost.target.position;
             Vector3 ghostPosition = transform.position;
-
-            // Run API every 60 frames rendered or is in intersection
-            if (framesRendered % 60 == 0 || availableDirection.Length > 2) {
+            
+            // Run API every 2 second
+            if(framesRendered % 2 == 0 && node.availableDirections.Count > 2){
+                // UnityEngine.Debug.Log("Frames : " + framesRendered);
+                gameManager.SetFramesRendered(1);
                 // Set the path to your Python executable and script
                 string pythonExecutable = "C:/Users/asus/AppData/Local/Microsoft/WindowsApps/python.exe";
                 string pythonScript = "D:/Kuliah/(2023) S4-KB/PACMAN-KB-MIDTERM/Assets/Scripts/GhostGbfs.py";
-
-                // // GET TIME NOW BEFORE RUNNING SCRIPT
-                DateTime now = DateTime.UtcNow;
-                TimeSpan timeSinceEpoch = now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                long epoch_before = (long)timeSinceEpoch.TotalSeconds;
-                UnityEngine.Debug.Log("Before running script: " + epoch_before);
 
                 // Create a new process to run the Python script
                 ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -67,18 +63,32 @@ public class GhostChase : GhostBehavior
 
                 Vector2 result = new Vector2(x, y);
 
-                UnityEngine.Debug.Log("result :" + result);
+                UnityEngine.Debug.Log("result :" + result + " ghost : " + ghost.name);
                 ghost.movement.SetDirection(result);
 
-                // // GET TIME NOW AFTER RUNNING SCRIPT
-                DateTime now2 = DateTime.UtcNow;
-                TimeSpan timeSinceEpoch2 = now2 - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                long epoch_after = (long)timeSinceEpoch2.TotalSeconds;
-                UnityEngine.Debug.Log("After running script: " + epoch_after);
+            } else { // use same direction
+                // Udah dap aku aja:v wkwkwk okee okee
+                // sek aku mau coba wkwkw ok OHHH BEN
 
-                // CALCULATE LATENCY
-                long latency = epoch_after - epoch_before;
-                UnityEngine.Debug.Log("Latency: " + latency);
+                // Do nothing while the ghost is frightened
+                if (node != null && enabled && !ghost.frightened.enabled)
+                {
+                    // Pick a random available direction
+                    int index = UnityEngine.Random.Range(0, node.availableDirections.Count);
+
+                    // Prefer not to go back the same direction so increment the index to
+                    // the next available direction
+                    if (node.availableDirections.Count > 1 && node.availableDirections[index] == -ghost.movement.direction)
+                    {
+                        index++;
+
+                        // Wrap the index back around if overflowed
+                        if (index >= node.availableDirections.Count) {
+                            index = 0;
+                        }
+                    }
+                    ghost.movement.SetDirection(node.availableDirections[index]);
+                }
             }
 
             // Print the output to the console
@@ -95,6 +105,5 @@ public class GhostChase : GhostBehavior
 
         } 
     }
-
 
 }

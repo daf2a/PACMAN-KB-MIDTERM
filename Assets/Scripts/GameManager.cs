@@ -16,6 +16,12 @@ public class GameManager : MonoBehaviour
     public int lives { get; private set; }
     public int framesRendered { get; private set; }
 
+    public int carryFrame { get; private set; }
+
+    public void SetFramesRendered(int value) {
+        framesRendered += value;
+    }
+
     private void Start()
     {
         NewGame();
@@ -85,10 +91,14 @@ public class GameManager : MonoBehaviour
     {
         if (isInitial) {
             this.framesRendered = 0;
+            this.carryFrame = 0;
         } else {
-            this.framesRendered += 1;
+            this.carryFrame += 1;
+            if(carryFrame % 1000 == 0){
+                this.framesRendered += 1;
+            }
         }
-        Debug.Log("Elapsed Time: " + this.framesRendered); // Please check the value of this
+        //Debug.Log("Elapsed Time: " + this.framesRendered); // Please check the value of this
     }
 
     public void PacmanEaten()
