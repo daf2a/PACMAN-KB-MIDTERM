@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour
 
     private void Start()
     {
-        ResetState();
+        ResetState(1);
     }
 
     public void ResetState(int speed_multiplier)

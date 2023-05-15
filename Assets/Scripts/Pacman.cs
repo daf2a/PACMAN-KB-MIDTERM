@@ -43,7 +43,7 @@ public class Pacman : MonoBehaviour
         collider.enabled = true;
         deathSequence.enabled = false;
         deathSequence.spriteRenderer.enabled = false;
-        movement.ResetState();
+        movement.ResetState(1);
         gameObject.SetActive(true);
     }
 
