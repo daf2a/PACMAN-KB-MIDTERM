@@ -13,6 +13,8 @@ public class GhostChase : GhostBehavior
     {
         Node node = other.GetComponent<Node>();
         GameManager gameManager = FindObjectOfType<GameManager>();
+        TileMap tilemap = FindObjectOfType<TileMap>();
+
         int framesRendered = gameManager.framesRendered;
 
         // Do nothing while the ghost is frightened
@@ -39,6 +41,14 @@ public class GhostChase : GhostBehavior
                 // Set the path to your Python executable and script
                 string pythonExecutable = "C:/Users/asus/AppData/Local/Microsoft/WindowsApps/python.exe";
                 string pythonScript = "D:/Kuliah/(2023) S4-KB/PACMAN-KB-MIDTERM/Assets/Scripts/GhostGbfs.py";
+
+                // Configurations for A*
+                // string pythonScript = "D:/Kuliah/(2023) S4-KB/PACMAN-KB-MIDTERM/Assets/Scripts/GhostAstar.py";
+                // string args = "\"" + pythonScript + "\" \"" + targetPosition + "\" \"" + ghostPosition + "\";
+
+                // append tilemap to string arguments
+                // for tile in tilemap.availablePath:
+                //     args += " \"" + tile + "\"";
 
                 // Create a new process to run the Python script
                 ProcessStartInfo startInfo = new ProcessStartInfo();
