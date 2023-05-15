@@ -27,10 +27,10 @@ public class Ghost : MonoBehaviour
         ResetState();
     }
 
-    public void ResetState()
+    public void ResetState(int speed_multiplier)
     {
         gameObject.SetActive(true);
-        movement.ResetState();
+        movement.ResetState(speed_multiplier);
 
         frightened.Disable();
         chase.Disable();

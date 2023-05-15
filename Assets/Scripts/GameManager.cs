@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public int score { get; private set; }
     public int lives { get; private set; }
     public int framesRendered { get; private set; }
+    public int currentLevel { get; private set; } = 1;
 
     public int carryFrame { get; private set; }
 
@@ -46,19 +47,21 @@ public class GameManager : MonoBehaviour
 
     private void NewRound()
     {
+        Debug.Log("Current Level: ", currentLevel);
         gameOverText.enabled = false;
 
         foreach (Transform pellet in pellets) {
             pellet.gameObject.SetActive(true);
         }
 
-        ResetState();   
+        ResetState();
     }
 
     private void ResetState()
     {
+        int speed_multiplier = 0.7 + (currentLevel - 1) / 4;
         for (int i = 0; i < ghosts.Length; i++) {
-            ghosts[i].ResetState();
+            ghosts[i].ResetState(speed_multiplier);
         }
 
         pacman.ResetState();
@@ -130,6 +133,7 @@ public class GameManager : MonoBehaviour
 
         if (!HasRemainingPellets())
         {
+            currentLevel++;
             pacman.gameObject.SetActive(false);
             Invoke(nameof(NewRound), 3f);
         }

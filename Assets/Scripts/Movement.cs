@@ -24,9 +24,9 @@ public class Movement : MonoBehaviour
         ResetState();
     }
 
-    public void ResetState()
+    public void ResetState(int speed_multiplier)
     {
-        speedMultiplier = 1f;
+        speedMultiplier = speed_multiplier;
         direction = initialDirection;
         nextDirection = Vector2.zero;
         transform.position = startingPosition;
