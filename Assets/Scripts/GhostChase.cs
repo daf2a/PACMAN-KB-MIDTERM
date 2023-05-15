@@ -34,7 +34,7 @@ public class GhostChase : GhostBehavior
             
             // Run API every 2 second
             if(framesRendered % 2 == 0 && node.availableDirections.Count > 2){
-                // UnityEngine.Debug.Log("Frames : " + framesRendered);
+                UnityEngine.Debug.Log("Frames : " + framesRendered);
                 gameManager.SetFramesRendered(1);
                 // Set the path to your Python executable and script
                 string pythonExecutable = "C:/Users/asus/AppData/Local/Microsoft/WindowsApps/python.exe";
@@ -66,10 +66,7 @@ public class GhostChase : GhostBehavior
                 UnityEngine.Debug.Log("result :" + result + " ghost : " + ghost.name);
                 ghost.movement.SetDirection(result);
 
-            } else { // use same direction
-                // Udah dap aku aja:v wkwkwk okee okee
-                // sek aku mau coba wkwkw ok OHHH BEN
-
+            } else {
                 // Do nothing while the ghost is frightened
                 if (node != null && enabled && !ghost.frightened.enabled)
                 {
@@ -107,3 +104,5 @@ public class GhostChase : GhostBehavior
     }
 
 }
+
+#pragma warning disable CS0436
